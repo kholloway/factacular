@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/codegangsta/cli"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+
+	"github.com/codegangsta/cli"
 )
 
 var (
@@ -106,10 +107,8 @@ func ExampleNodeFacts() {
 	app.Action = func(c *cli.Context) {
 		nodeFacts(c)
 		// Output:
-		// foobar - architecture
-		// amd64
-		// foobar - puppetversion
-		// 3.7.1
+		//foobar                         architecture              amd64
+		//foobar                         puppetversion             3.7.1
 	}
 	app.Run([]string{"factacular", "node-facts", "foobar"})
 }
