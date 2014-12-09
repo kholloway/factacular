@@ -6,14 +6,30 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"sort"
+
 	"github.com/codegangsta/cli"
 	"github.com/temal-/go-puppetdb"
-	"log"
 )
 
 var (
 	resp []puppetdb.FactJson
 )
+
+type ByCert []puppetdb.FactJson
+
+func (slice ByCert) Len() int {
+	return len(slice)
+}
+
+func (slice ByCert) Less(i, j int) bool {
+	return slice[i].CertName < slice[j].CertName
+}
+
+func (slice ByCert) Swap(i, j int) {
+	slice[i], slice[j] = slice[j], slice[i]
+}
 
 func fact(c *cli.Context) {
 	if c.Args().First() == "" {
@@ -45,8 +61,9 @@ func fact(c *cli.Context) {
 		allNodes, _ := pdbClient.Nodes()
 		printNoFact(c.Args().First(), allNodes)
 	default:
+		sort.Sort(ByCert(resp))
 		for _, element := range resp {
-			fmt.Printf("%v - %v\n", element.CertName, element.Value)
+			fmt.Printf("%-30v %v\n", element.CertName, element.Value)
 		}
 	}
 }
