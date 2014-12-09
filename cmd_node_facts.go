@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/codegangsta/cli"
 )
 
@@ -23,7 +24,6 @@ func nodeFacts(c *cli.Context) {
 		fmt.Println(err)
 	}
 	for _, element := range resp {
-		fmt.Printf("%v - %v\n", c.Args().First(), element.Name)
-		fmt.Println(element.Value)
+		fmt.Printf("%30v %25v %v\n", c.Args().First(), element.Name, element.Value)
 	}
 }
